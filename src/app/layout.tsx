@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/Header";
 
 const sans = Open_Sans({ subsets: ["latin"] });
 
@@ -15,8 +16,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${sans.className} antialiased`}>{children}</body>
+    <html lang="en" className="w-screen h-screen">
+      <body
+        className={`${sans.className} antialiased w-screen h-screen overflow-y-auto`}
+      >
+        <Header />
+        <main>{children}</main>
+      </body>
     </html>
   );
 }
