@@ -1,5 +1,16 @@
+import SignIn from "@/components/SignIn";
 import React from "react";
 
-export default function SignInPage() {
-  return <div>SignInPage</div>;
+type Props = {
+  searchParams: {
+    callbackUrl: string;
+  };
+};
+
+export default function SignInPage({ searchParams: { callbackUrl } }: Props) {
+  return (
+    <section className="flex justify-center items-center h-full">
+      <SignIn callbackUrl={callbackUrl} />
+    </section>
+  );
 }

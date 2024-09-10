@@ -10,6 +10,8 @@ import PlusFilledIcon from "./ui/icons/PlusFilledIcon";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ColorButton from "./ui/ColorButton";
+import { signIn, signOut, useSession } from "next-auth/react";
+import Avatar from "./Avatar";
 
 const MENUS = [
   { icon: <HomeIcon />, filledIcon: <HomeFilledIcon />, href: "/" },
@@ -19,6 +21,8 @@ const MENUS = [
 
 export default function Header() {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const user = session?.user;
 
   return (
     <header className="sticky top-0 border-b border-neutral-200 bg-white z-40">
@@ -33,10 +37,19 @@ export default function Header() {
                 <Link href={href}>{pathname === href ? filledIcon : icon}</Link>
               </li>
             ))}
+            {user && (
+              <li>
+                <Link href={`/user/${user.username}`}>
+                  <Avatar image={user.image} />
+                </Link>
+              </li>
+            )}
             <li>
-              <Link href="/signIn">
-                <ColorButton text="Sign in" onClick={() => {}} />
-              </Link>
+              {session ? (
+                <ColorButton text="Sign out" onClick={signOut} />
+              ) : (
+                <ColorButton text="Sign in" onClick={signIn} />
+              )}
             </li>
           </ul>
         </nav>

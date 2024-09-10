@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
+import { SessionProvider } from "next-auth/react";
 
 const sans = Open_Sans({ subsets: ["latin"] });
 
@@ -18,10 +19,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="w-screen h-screen">
       <body
-        className={`${sans.className} antialiased w-screen h-screen overflow-y-auto`}
+        className={`${sans.className} antialiased flex flex-col w-screen h-screen overflow-y-auto`}
       >
-        <Header />
-        <main>{children}</main>
+        <SessionProvider>
+          <Header />
+          <main className="grow">{children}</main>
+        </SessionProvider>
       </body>
     </html>
   );
