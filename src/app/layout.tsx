@@ -23,7 +23,7 @@ export default function RootLayout({
       >
         <SessionProvider>
           <Header />
-          <main className="grow">{children}</main>
+          <main className="grow w-full bg-neutral-50">{children}</main>
         </SessionProvider>
       </body>
     </html>
