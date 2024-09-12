@@ -34,3 +34,32 @@ export async function getPosts(username: string) {
       }))
     );
 }
+
+export async function getPostById(id: string) {
+  return client
+    .fetch(
+      `*[_type == "post" && _id == $id][0]{
+        ...,
+        "id": _id,
+        "username": author->username,
+        "userImage": author->image,
+        "image": photo,
+        "likes": likes[]->username,
+        "createdAt": _createdAt,
+        comments[]{
+          comment,
+          "username": author->username,
+          "image": author->image
+        }
+      }
+    `,
+      {
+        id,
+      }
+    )
+    .then((post) => ({
+      ...post,
+      likes: post.likes || [],
+      image: urlFor(post.image).width(800).url(),
+    }));
+}

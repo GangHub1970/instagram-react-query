@@ -17,7 +17,9 @@ export default function FollowingBar() {
   const users = data?.following;
 
   return (
-    <section className="flex justify-center items-center p-4 w-full shadow-md rounded-md min-h-[90px] overflow-x-auto">
+    // react-multi-carousel의 컴포넌트 z-index가 높아서 다른 컴포넌트를 가리기때문에
+    // relative로 내부 요소의 부모요소로 section 태그를 설정해주고 section 태그의 z-index를 낮춰줌으로써 해결
+    <section className="relative flex justify-center items-center p-4 w-full shadow-md rounded-md min-h-[90px] overflow-x-auto z-0">
       {isLoading ? (
         <PropagateLoader size={8} color="red" />
       ) : (
@@ -25,7 +27,7 @@ export default function FollowingBar() {
       )}
       {users && users.length > 0 && (
         <ScrollableBar>
-          {users.map(({ username, image }, index) => (
+          {[...users, ...users, ...users].map(({ username, image }, index) => (
             <Link
               key={index}
               href={`/user/${username}`}

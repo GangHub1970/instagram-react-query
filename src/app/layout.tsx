@@ -28,6 +28,7 @@ export default function RootLayout({
             <main className="grow w-full bg-neutral-50">{children}</main>
           </QueryContext>
         </SessionProvider>
+        <div id="portal" />
       </body>
     </html>
   );
