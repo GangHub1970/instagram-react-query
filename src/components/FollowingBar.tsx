@@ -1,6 +1,6 @@
 "use client";
 
-import { meDataFetcher } from "@/lib/axios";
+import { meDataFetcher } from "@/lib/fetchers/user";
 import { User } from "@/models/user";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
@@ -17,7 +17,7 @@ export default function FollowingBar() {
   const users = data?.following;
 
   return (
-    <section className="flex justify-center items-center w-full p-4 shadow-md rounded-md min-h-[90px] overflow-x-auto">
+    <section className="flex justify-center items-center p-4 w-full shadow-md rounded-md min-h-[90px] overflow-x-auto">
       {isLoading ? (
         <PropagateLoader size={8} color="red" />
       ) : (

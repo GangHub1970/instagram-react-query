@@ -47,7 +47,7 @@ function getAvatarClassName(
       className = "w-9 h-9";
       break;
     case "md":
-      className = "w-14 h-14";
+      className = "w-12 h-12";
       break;
     case "lg":
       className = "w-16 h-16";
