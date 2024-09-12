@@ -1,9 +1,9 @@
-import { OAuthUser } from "@/models/user";
+import { AuthUser } from "@/models/user";
 import React from "react";
 import Avatar from "./Avatar";
 
 type Props = {
-  user: OAuthUser;
+  user: AuthUser;
 };
 
 const TAGS = [

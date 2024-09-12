@@ -3,6 +3,7 @@ import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import { SessionProvider } from "next-auth/react";
+import QueryContext from "@/contexts/QueryContext";
 
 const sans = Open_Sans({ subsets: ["latin"] });
 
@@ -23,7 +24,9 @@ export default function RootLayout({
       >
         <SessionProvider>
           <Header />
-          <main className="grow w-full bg-neutral-50">{children}</main>
+          <QueryContext>
+            <main className="grow w-full bg-neutral-50">{children}</main>
+          </QueryContext>
         </SessionProvider>
       </body>
     </html>
