@@ -13,3 +13,8 @@ export type User = {
   followers: SimpleUser[];
   bookmarks: string[];
 };
+
+export type SearchUser = Omit<AuthUser, "email"> & {
+  following: number;
+  followers: number;
+};

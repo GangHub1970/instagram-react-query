@@ -1,4 +1,4 @@
-import { AuthUser } from "@/models/user";
+import { AuthUser, SearchUser } from "@/models/user";
 import { client } from "./sanity";
 
 export function addUser({ id, name, username, email, image }: AuthUser) {
@@ -28,4 +28,31 @@ export function getUserByUsername(username: string) {
     }`,
     { username }
   );
+}
+
+export function getSearchUsers(keyword: string) {
+  const query = keyword
+    ? "&& (username match $keyword || name match $keyword)"
+    : "";
+
+  return client
+    .fetch(
+      `*[_type == "user" ${query}]{
+        "id": _id,
+        username,
+        name,
+        image,
+        "following": count(following),
+        "followers": count(followers),
+      }
+    `,
+      { keyword: `*${keyword}*` }
+    )
+    .then((users) =>
+      users.map((user: SearchUser) => ({
+        ...user,
+        following: user.following ?? 0,
+        followers: user.followers ?? 0,
+      }))
+    );
 }
