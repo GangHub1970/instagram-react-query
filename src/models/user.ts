@@ -8,7 +8,7 @@ export type AuthUser = {
 
 export type SimpleUser = Pick<AuthUser, "image" | "username">;
 
-export type User = {
+export type HomeUser = AuthUser & {
   following: SimpleUser[];
   followers: SimpleUser[];
   bookmarks: string[];
@@ -17,4 +17,8 @@ export type User = {
 export type SearchUser = Omit<AuthUser, "email"> & {
   following: number;
   followers: number;
+};
+
+export type ProfileUser = SearchUser & {
+  posts: number;
 };

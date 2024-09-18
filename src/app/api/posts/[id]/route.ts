@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { getPostById, getPosts } from "@/services/post";
+import { getPostById } from "@/services/post";
 import { NextRequest, NextResponse } from "next/server";
 
 type Context = {

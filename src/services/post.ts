@@ -26,13 +26,7 @@ export async function getPosts(username: string) {
         username,
       }
     )
-    .then((posts) =>
-      posts.map((post: SimplePost) => ({
-        ...post,
-        likes: post.likes || [],
-        image: urlFor(post.image).width(800).url(),
-      }))
-    );
+    .then(mapPosts);
 }
 
 export async function getPostById(id: string) {
@@ -60,6 +54,59 @@ export async function getPostById(id: string) {
     .then((post) => ({
       ...post,
       likes: post.likes || [],
-      image: urlFor(post.image).width(800).url(),
+      image: urlFor(post.image),
     }));
+}
+
+export async function getMyPosts(username: string) {
+  return client
+    .fetch(
+      `*[_type == "post" && author->username == $username]
+        | order(_createdAt desc){
+          ${simplePostProjection}
+        }
+    `,
+      {
+        username,
+      }
+    )
+    .then(mapPosts);
+}
+
+export async function getBookmarkedPosts(username: string) {
+  return client
+    .fetch(
+      `*[_type == "post" && _id in *[_type == "user" && username == $username].bookmarks[]._ref]
+        | order(_createdAt desc){
+          ${simplePostProjection}
+        }
+    `,
+      {
+        username,
+      }
+    )
+    .then(mapPosts);
+}
+
+export async function getLikedPosts(username: string) {
+  return client
+    .fetch(
+      `*[_type == "post" && $username in likes[]->username]
+        | order(_createdAt desc){
+          ${simplePostProjection}
+        }
+    `,
+      {
+        username,
+      }
+    )
+    .then(mapPosts);
+}
+
+function mapPosts(posts: SimplePost[]) {
+  return posts.map((post) => ({
+    ...post,
+    likes: post.likes || [],
+    image: urlFor(post.image),
+  }));
 }

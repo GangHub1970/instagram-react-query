@@ -13,3 +13,7 @@ export async function searchUserDataFetcher(keyword: string) {
     })
     .then((res) => res.data);
 }
+
+export async function myPostDataFetcher(username: string, type: string) {
+  return instance.get(`/api/user/${username}/${type}`).then((res) => res.data);
+}

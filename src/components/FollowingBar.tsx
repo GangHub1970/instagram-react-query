@@ -1,7 +1,7 @@
 "use client";
 
 import { meDataFetcher } from "@/lib/fetchers/user";
-import { User } from "@/models/user";
+import { HomeUser } from "@/models/user";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import Avatar from "./Avatar";
@@ -10,7 +10,7 @@ import Link from "next/link";
 import ScrollableBar from "./ui/ScrollableBar";
 
 export default function FollowingBar() {
-  const { data, isLoading, error } = useQuery<User>({
+  const { data, isLoading, error } = useQuery<HomeUser>({
     queryKey: ["me"],
     queryFn: meDataFetcher,
   });

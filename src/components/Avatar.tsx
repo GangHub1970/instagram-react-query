@@ -33,13 +33,15 @@ export default function Avatar({
   );
 }
 
+type AvatarSizeStyle = {
+  containerClassName: string;
+  imgClassName: string;
+}
+
 function getAvatarClassName(
   size: AvatarSize,
   highlight: boolean
-): {
-  containerClassName: string;
-  imgClassName: string;
-} {
+): AvatarSizeStyle {
   const base = "rounded-full";
   let className;
   switch (size) {
