@@ -24,6 +24,11 @@ export default function Header() {
   const { data: session } = useSession();
   const user = session?.user;
 
+  const handleSignInClick = () => {
+    if (pathname === "/signin") return;
+
+    signIn();
+  };
   return (
     <header className="sticky top-0 border-b border-neutral-200 bg-white z-40">
       <section className="flex justify-between mx-auto py-4 px-8 max-w-screen-xl w-full">
@@ -48,7 +53,7 @@ export default function Header() {
               {session ? (
                 <ColorButton text="Sign out" onClick={signOut} />
               ) : (
-                <ColorButton text="Sign in" onClick={signIn} />
+                <ColorButton text="Sign in" onClick={handleSignInClick} />
               )}
             </li>
           </ul>

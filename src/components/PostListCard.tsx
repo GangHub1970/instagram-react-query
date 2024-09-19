@@ -16,7 +16,7 @@ type Props = {
 };
 
 export default function PostListCard({ post, priority }: Props) {
-  const { username, userImage, image, text, createdAt, likes } = post;
+  const { id, username, userImage, image, text, createdAt, likes } = post;
   const [openModal, setOpenModal] = useState(false);
 
   return (
@@ -31,12 +31,7 @@ export default function PostListCard({ post, priority }: Props) {
         className="w-full object-cover aspect-square"
         onClick={() => setOpenModal(true)}
       />
-      <ActionBar
-        text={text}
-        likes={likes}
-        username={username}
-        createdAt={createdAt}
-      />
+      <ActionBar post={post} />
       <CommentForm />
       {openModal && (
         <ModalPortal>

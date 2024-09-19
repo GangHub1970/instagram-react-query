@@ -35,16 +35,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       return true;
     },
-    async session({ session }) {
+    async session({ session, token }) {
       const user = session?.user;
 
       if (user) {
         session.user = {
           ...user,
           username: user.email.split("@")[0] || "",
+          id: token.id as string,
         };
       }
       return session;
+    },
+    async jwt({ token, profile }) {
+      if (profile) {
+        token.id = profile.sub;
+      }
+      return token;
     },
   },
 });

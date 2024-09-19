@@ -6,5 +6,5 @@ type Props = {
 };
 
 export default function BookmarkIcon({ className }: Props) {
-  return <IoBookmarkOutline className={className || "w-7 h-7"} />;
+  return <IoBookmarkOutline className={className || "w-6 h-6"} />;
 }

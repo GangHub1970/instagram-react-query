@@ -6,5 +6,5 @@ type Props = {
 };
 
 export default function HeartIcon({ className }: Props) {
-  return <IoMdHeartEmpty className={className || "w-6 h-6"} />;
+  return <IoMdHeartEmpty className={className || "w-7 h-7"} />;
 }

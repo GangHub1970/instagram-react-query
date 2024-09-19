@@ -110,3 +110,20 @@ function mapPosts(posts: SimplePost[]) {
     image: urlFor(post.image),
   }));
 }
+
+export async function likePost(userId: string, postId: string) {
+  return client
+    .patch(postId)
+    .setIfMissing({ likes: [] })
+    .append("likes", [{ _type: "reference", _ref: userId }])
+    .commit({
+      autoGenerateArrayKeys: true,
+    });
+}
+
+export async function removeLikePost(userId: string, postId: string) {
+  return client
+    .patch(postId)
+    .unset([`likes[_ref == "${userId}"]`])
+    .commit();
+}
