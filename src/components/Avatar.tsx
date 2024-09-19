@@ -36,7 +36,7 @@ export default function Avatar({
 type AvatarSizeStyle = {
   containerClassName: string;
   imgClassName: string;
-}
+};
 
 function getAvatarClassName(
   size: AvatarSize,

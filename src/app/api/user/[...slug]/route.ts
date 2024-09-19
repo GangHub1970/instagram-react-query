@@ -1,10 +1,4 @@
-import { auth } from "@/auth";
-import {
-  getBookmarkedPosts,
-  getLikedPosts,
-  getMyPosts,
-  getPostById,
-} from "@/services/post";
+import { getBookmarkedPosts, getLikedPosts, getMyPosts } from "@/services/post";
 import { NextRequest, NextResponse } from "next/server";
 
 type Context = {

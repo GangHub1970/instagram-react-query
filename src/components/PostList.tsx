@@ -8,11 +8,7 @@ import PostListCard from "./PostListCard";
 import GridSpinner from "./ui/GridSpinner";
 
 export default function PostList() {
-  const {
-    data: posts,
-    isLoading,
-    error,
-  } = useQuery<SimplePost[]>({
+  const { data: posts, isLoading } = useQuery<SimplePost[]>({
     queryKey: ["posts"],
     queryFn: postListDataFetcher,
   });

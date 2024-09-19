@@ -19,6 +19,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: "/signin",
   },
+  trustHost: true,
   callbacks: {
     async signIn({ user: { email, name, image }, profile }) {
       if (!email) return false;

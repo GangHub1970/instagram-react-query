@@ -13,8 +13,8 @@ type Props = {
 };
 
 export default function PostDetail({ post }: Props) {
-  const { id, username, userImage, image, text, createdAt, likes } = post;
-  const { data, isLoading, error } = useQuery<FullPost>({
+  const { id, username, userImage, image, createdAt, likes } = post;
+  const { data } = useQuery<FullPost>({
     queryKey: ["post", id],
     queryFn: () => postDetailDataFetcher(id),
   });

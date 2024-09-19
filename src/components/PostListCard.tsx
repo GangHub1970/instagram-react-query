@@ -2,7 +2,6 @@
 
 import { SimplePost } from "@/models/post";
 import React, { useState } from "react";
-import Avatar from "./Avatar";
 import Image from "next/image";
 import CommentForm from "./CommentForm";
 import ActionBar from "./ActionBar";
@@ -17,7 +16,7 @@ type Props = {
 };
 
 export default function PostListCard({ post, priority }: Props) {
-  const { username, userImage, image, text, createdAt, likes, comments } = post;
+  const { username, userImage, image, text, createdAt, likes } = post;
   const [openModal, setOpenModal] = useState(false);
 
   return (

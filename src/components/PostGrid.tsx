@@ -13,11 +13,7 @@ type Props = {
 };
 
 export default function PostGrid({ query, username }: Props) {
-  const {
-    data: posts,
-    isLoading,
-    error,
-  } = useQuery<SimplePost[]>({
+  const { data: posts, isLoading } = useQuery<SimplePost[]>({
     queryKey: ["user_posts", username, query],
     queryFn: () => myPostDataFetcher(username, query),
   });

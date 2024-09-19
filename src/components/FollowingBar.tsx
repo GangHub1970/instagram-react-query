@@ -10,7 +10,7 @@ import Link from "next/link";
 import ScrollableBar from "./ui/ScrollableBar";
 
 export default function FollowingBar() {
-  const { data, isLoading, error } = useQuery<HomeUser>({
+  const { data, isLoading } = useQuery<HomeUser>({
     queryKey: ["me"],
     queryFn: meDataFetcher,
   });
@@ -27,7 +27,7 @@ export default function FollowingBar() {
       )}
       {users && users.length > 0 && (
         <ScrollableBar>
-          {[...users, ...users, ...users].map(({ username, image }, index) => (
+          {users.map(({ username, image }, index) => (
             <Link
               key={index}
               href={`/user/${username}`}
