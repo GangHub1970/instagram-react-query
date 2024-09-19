@@ -1,17 +1,12 @@
 "use client";
 
-import { postListDataFetcher } from "@/lib/fetchers/post";
-import { SimplePost } from "@/models/post";
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import PostListCard from "./PostListCard";
 import GridSpinner from "./ui/GridSpinner";
+import usePosts from "@/hooks/posts";
 
 export default function PostList() {
-  const { data: posts, isLoading } = useQuery<SimplePost[]>({
-    queryKey: ["posts"],
-    queryFn: postListDataFetcher,
-  });
+  const { posts, isLoading } = usePosts();
 
   return (
     <section>

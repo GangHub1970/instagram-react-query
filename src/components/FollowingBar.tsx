@@ -1,20 +1,15 @@
 "use client";
 
-import { meDataFetcher } from "@/lib/fetchers/user";
-import { HomeUser } from "@/models/user";
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import Avatar from "./Avatar";
 import { PropagateLoader } from "react-spinners";
 import Link from "next/link";
 import ScrollableBar from "./ui/ScrollableBar";
+import useMe from "@/hooks/me";
 
 export default function FollowingBar() {
-  const { data, isLoading } = useQuery<HomeUser>({
-    queryKey: ["me"],
-    queryFn: meDataFetcher,
-  });
-  const users = data?.following;
+  const { user, isLoading } = useMe();
+  const users = user?.following;
 
   return (
     // react-multi-carousel의 컴포넌트 z-index가 높아서 다른 컴포넌트를 가리기때문에
