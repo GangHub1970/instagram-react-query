@@ -1,25 +1,24 @@
-import { postDetailDataFetcher } from "@/lib/fetchers/post";
-import { FullPost, SimplePost } from "@/models/post";
-import { useQuery } from "@tanstack/react-query";
+import { Comment, SimplePost } from "@/models/post";
 import Image from "next/image";
 import React from "react";
 import PostUserAvatar from "./PostUserAvatar";
 import ActionBar from "./ActionBar";
 import CommentForm from "./CommentForm";
 import Avatar from "./Avatar";
+import useFullPost from "@/hooks/post";
 
 type Props = {
   post: SimplePost;
 };
 
 export default function PostDetail({ post }: Props) {
-  const { id, username, userImage, image, createdAt, likes } = post;
-  const { data } = useQuery<FullPost>({
-    queryKey: ["post", id],
-    queryFn: () => postDetailDataFetcher(id),
-  });
-  const comments = data?.comments;
+  const { id, username, userImage, image } = post;
+  const { post: fullPost, addComment } = useFullPost(id);
+  const comments = fullPost?.comments;
 
+  const handleAddComment = (comment: Comment) => {
+    addComment.mutate(comment);
+  };
   return (
     <section className="flex w-full h-full">
       <div className="relative basis-3/5">
@@ -53,7 +52,7 @@ export default function PostDetail({ post }: Props) {
             )}
         </ul>
         <ActionBar post={post} />
-        <CommentForm />
+        <CommentForm onAddComment={handleAddComment} />
       </div>
     </section>
   );

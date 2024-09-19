@@ -13,10 +13,11 @@ import useMe from "@/hooks/me";
 
 type Props = {
   post: SimplePost;
+  children?: React.ReactNode;
 };
 
-export default function ActionBar({ post }: Props) {
-  const { id, likes, username, text, createdAt } = post;
+export default function ActionBar({ post, children }: Props) {
+  const { id, likes, createdAt } = post;
   const { setLike } = usePosts();
   const { user, setBookmark } = useMe();
 
@@ -49,12 +50,7 @@ export default function ActionBar({ post }: Props) {
         <p className="mb-2 text-sm font-bold">{`${likes?.length} ${
           likes?.length > 1 ? "likes" : "like"
         }`}</p>
-        {text && (
-          <p>
-            <span className="mr-1 font-bold">{username}</span>
-            {text}
-          </p>
-        )}
+        {children}
         <p className="my-2 text-xs text-neutral-500 uppercase">
           {parseDate(createdAt)}
         </p>
