@@ -1,15 +1,12 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import SmileIcon from "./ui/icons/SmileIcon";
-import { Comment } from "@/models/post";
-import useMe from "@/hooks/me";
 
 type Props = {
-  onAddComment: (comment: Comment) => void;
+  onAddComment: (comment: string) => void;
 };
 
 export default function CommentForm({ onAddComment }: Props) {
   const [text, setText] = useState("");
-  const { user } = useMe();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
@@ -17,12 +14,7 @@ export default function CommentForm({ onAddComment }: Props) {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    user &&
-      onAddComment({
-        comment: text,
-        username: user?.username,
-        image: user?.image,
-      });
+    onAddComment(text);
     setText("");
   };
   return (

@@ -3,7 +3,6 @@
 import { Comment, SimplePost } from "@/models/post";
 import React, { useState } from "react";
 import Image from "next/image";
-import CommentForm from "./CommentForm";
 import ActionBar from "./ActionBar";
 import ModalPortal from "./ui/ModalPortal";
 import PostModal from "./ui/PostModal";
@@ -22,7 +21,7 @@ export default function PostListCard({ post, priority }: Props) {
   const { addComment } = usePosts();
 
   const handleAddComment = (comment: Comment) => {
-    addComment.mutate({ post, comment });
+    addComment({ post, comment });
   };
   return (
     <li className="mb-4 rounded-lg shadow-md border border-gray-200">
@@ -36,7 +35,7 @@ export default function PostListCard({ post, priority }: Props) {
         className="w-full object-cover aspect-square"
         onClick={() => setOpenModal(true)}
       />
-      <ActionBar post={post}>
+      <ActionBar post={post} onAddComment={handleAddComment}>
         {text && (
           <p>
             <span className="mr-1 font-bold">{username}</span>
@@ -50,7 +49,6 @@ export default function PostListCard({ post, priority }: Props) {
           >{`View all ${comments} comments`}</button>
         )}
       </ActionBar>
-      <CommentForm onAddComment={handleAddComment} />
       {openModal && (
         <ModalPortal>
           <PostModal onClose={() => setOpenModal(false)}>

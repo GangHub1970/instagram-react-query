@@ -3,7 +3,6 @@ import Image from "next/image";
 import React from "react";
 import PostUserAvatar from "./PostUserAvatar";
 import ActionBar from "./ActionBar";
-import CommentForm from "./CommentForm";
 import Avatar from "./Avatar";
 import useFullPost from "@/hooks/post";
 
@@ -17,7 +16,7 @@ export default function PostDetail({ post }: Props) {
   const comments = fullPost?.comments;
 
   const handleAddComment = (comment: Comment) => {
-    addComment.mutate(comment);
+    addComment(comment);
   };
   return (
     <section className="flex w-full h-full">
@@ -51,8 +50,7 @@ export default function PostDetail({ post }: Props) {
               )
             )}
         </ul>
-        <ActionBar post={post} />
-        <CommentForm onAddComment={handleAddComment} />
+        <ActionBar post={post} onAddComment={handleAddComment} />
       </div>
     </section>
   );

@@ -5,18 +5,20 @@ import HeartIcon from "./ui/icons/HeartIcon";
 import BookmarkIcon from "./ui/icons/BookmarkIcon";
 import { parseDate } from "@/utils/date";
 import HeartFilledIcon from "./ui/icons/HeartFilledIcon";
-import { SimplePost } from "@/models/post";
+import { Comment, SimplePost } from "@/models/post";
 import ToggleButton from "./ui/ToggleButton";
 import BookmarkFilledIcon from "./ui/icons/BookmarkFilledIcon";
 import usePosts from "@/hooks/posts";
 import useMe from "@/hooks/me";
+import CommentForm from "./CommentForm";
 
 type Props = {
   post: SimplePost;
+  onAddComment: (comment: Comment) => void;
   children?: React.ReactNode;
 };
 
-export default function ActionBar({ post, children }: Props) {
+export default function ActionBar({ post, onAddComment, children }: Props) {
   const { id, likes, createdAt } = post;
   const { setLike } = usePosts();
   const { user, setBookmark } = useMe();
@@ -25,10 +27,18 @@ export default function ActionBar({ post, children }: Props) {
   const bookmarked = user && user ? user.bookmarks.includes(id) : false;
 
   const handleLike = (liked: boolean) => {
-    user && setLike.mutate({ username: user.username, liked: !liked, post });
+    user && setLike({ username: user.username, liked: !liked, post });
   };
   const handleBookmark = (bookmarked: boolean) => {
     user && setBookmark.mutate({ id, bookmarked: !bookmarked });
+  };
+  const handleAddComment = (comment: string) => {
+    user &&
+      onAddComment({
+        username: user.username,
+        image: user.image,
+        comment,
+      });
   };
   return (
     <>
@@ -55,6 +65,7 @@ export default function ActionBar({ post, children }: Props) {
           {parseDate(createdAt)}
         </p>
       </div>
+      <CommentForm onAddComment={handleAddComment} />
     </>
   );
 }
