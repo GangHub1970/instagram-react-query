@@ -30,7 +30,7 @@ export default function ActionBar({ post, onAddComment, children }: Props) {
     user && setLike({ username: user.username, liked: !liked, post });
   };
   const handleBookmark = (bookmarked: boolean) => {
-    user && setBookmark.mutate({ id, bookmarked: !bookmarked });
+    user && setBookmark({ id, bookmarked: !bookmarked });
   };
   const handleAddComment = (comment: string) => {
     user &&

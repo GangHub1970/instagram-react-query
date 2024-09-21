@@ -67,7 +67,10 @@ export async function getUserForProfile(username: string) {
       "followers": count(followers),
       "posts": count(*[_type == "post" && username == $username]),
     }`,
-      { username }
+      { username },
+      {
+        cache: "no-store",
+      }
     )
     .then((user) => ({
       ...user,
@@ -82,14 +85,36 @@ export async function bookmarkPost(userId: string, postId: string) {
     .patch(userId)
     .setIfMissing({ bookmarks: [] })
     .append("bookmarks", [{ _type: "reference", _ref: postId }])
-    .commit({
-      autoGenerateArrayKeys: true,
-    });
+    .commit({ autoGenerateArrayKeys: true });
 }
 
 export async function removeBookmarkPost(userId: string, postId: string) {
   return client
     .patch(userId)
     .unset([`bookmarks[_ref == "${postId}"]`])
+    .commit();
+}
+
+export async function follow(myId: string, targetId: string) {
+  return client
+    .transaction()
+    .patch(myId, (user) =>
+      user
+        .setIfMissing({ following: [] })
+        .append("following", [{ _type: "reference", _ref: targetId }])
+    )
+    .patch(targetId, (user) =>
+      user
+        .setIfMissing({ followers: [] })
+        .append("followers", [{ _type: "reference", _ref: myId }])
+    )
+    .commit({ autoGenerateArrayKeys: true });
+}
+
+export async function unFollow(myId: string, targetId: string) {
+  return client
+    .transaction()
+    .patch(myId, (user) => user.unset([`following[_ref == "${targetId}"]`]))
+    .patch(targetId, (user) => user.unset([`followers[_ref == "${myId}"]`]))
     .commit();
 }

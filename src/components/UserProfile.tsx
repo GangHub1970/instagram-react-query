@@ -2,7 +2,6 @@ import React from "react";
 import Avatar from "./Avatar";
 import { ProfileUser } from "@/models/user";
 import FollowButton from "./FollowButton";
-import { auth } from "@/auth";
 
 type Props = {
   user: ProfileUser;
@@ -10,7 +9,6 @@ type Props = {
 
 export default async function UserProfile({ user }: Props) {
   const { name, username, image, followers, following, posts } = user;
-  const session = await auth();
   const info = [
     { title: "posts", value: posts },
     { title: "followers", value: followers },
@@ -23,7 +21,7 @@ export default async function UserProfile({ user }: Props) {
       <div className="md:ml-10 basis-1/3">
         <div className="flex flex-col md:flex-row items-center">
           <h1 className="text-2xl md:mr-8 my-2 md:mb-0">{username}</h1>
-          {session?.user && <FollowButton user={user} />}
+          <FollowButton user={user} />
         </div>
         <ul className="flex gap-4 my-4">
           {info.map(({ title, value }, index) => (

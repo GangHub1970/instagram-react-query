@@ -23,3 +23,7 @@ export async function userBookmarkFetcher(id: string, bookmarked: boolean) {
     .put("/api/bookmarks", { id, bookmarked })
     .then((res) => res.data);
 }
+
+export async function userFollowFetcher(id: string, followed: boolean) {
+  return instance.put("/api/follow", { id, followed }).then((res) => res.data);
+}
