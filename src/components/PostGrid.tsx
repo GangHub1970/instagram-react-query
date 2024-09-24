@@ -1,22 +1,14 @@
 "use client";
 
-import { myPostDataFetcher } from "@/lib/fetchers/user";
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import GridSpinner from "./ui/GridSpinner";
-import { SimplePost } from "@/models/post";
 import PostGridCard from "./PostGridCard";
+import usePosts from "@/hooks/posts";
+import { useCacheKey } from "@/contexts/CacheKeyContext";
 
-type Props = {
-  query: string;
-  username: string;
-};
-
-export default function PostGrid({ query, username }: Props) {
-  const { data: posts, isLoading } = useQuery<SimplePost[]>({
-    queryKey: ["user_posts", username, query],
-    queryFn: () => myPostDataFetcher(username, query),
-  });
+export default function PostGrid() {
+  const cacheKey = useCacheKey();
+  const { posts, isLoading } = usePosts(cacheKey.queryKey);
 
   return (
     <div className="text-center w-full">

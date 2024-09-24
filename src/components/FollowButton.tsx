@@ -27,14 +27,6 @@ export default function FollowButton({
     loggedInUser.following.find((item) => item.username === username);
   const text = following ? "Unfollow" : "Follow";
 
-  // const handleClick = () => {
-  //   onFollow(following ? followers - 1 : followers + 1);
-  //   startTransition(async () => {
-  //     await setFollow({ id, username, followed: !!following, image });
-  //     router.refresh();
-  //   });
-  // };
-
   const handleClick = () => {
     startTransition(async () => {
       onFollow(following ? followers - 1 : followers + 1);

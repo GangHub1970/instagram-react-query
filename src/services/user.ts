@@ -19,20 +19,19 @@ export function addUser({ id, name, username, email, image }: AuthUser) {
 
 export async function getUserByUsername(username: string) {
   return client.fetch(
-    `*[_type == "user" && username == $username][0]{
+    `*[_type == "user" && username == "${username}"][0]{
       ...,
       "id": _id,
       following[]->{image, username},
       followers[]->{image, username},
       "bookmarks": bookmarks[]->_id
-    }`,
-    { username }
+    }`
   );
 }
 
 export async function getSearchUsers(keyword: string) {
   const query = keyword
-    ? "&& (username match $keyword || name match $keyword)"
+    ? `&& (username match "*${keyword}*" || name match "*${keyword}*")`
     : "";
 
   return client
@@ -44,9 +43,7 @@ export async function getSearchUsers(keyword: string) {
         image,
         "following": count(following),
         "followers": count(followers),
-      }
-    `,
-      { keyword: `*${keyword}*` }
+      }`
     )
     .then((users) =>
       users.map((user: SearchUser) => ({
@@ -60,14 +57,14 @@ export async function getSearchUsers(keyword: string) {
 export async function getUserForProfile(username: string) {
   return client
     .fetch(
-      `*[_type == "user" && username == $username][0]{
+      `*[_type == "user" && username == "${username}"][0]{
       ...,
       "id": _id,
       "following": count(following),
       "followers": count(followers),
-      "posts": count(*[_type == "post" && username == $username]),
+      "posts": count(*[_type == "post" && username == "${username}"]),
     }`,
-      { username },
+      {},
       {
         cache: "no-store",
       }

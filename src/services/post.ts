@@ -16,15 +16,11 @@ const simplePostProjection = `
 export async function getPosts(username: string) {
   return client
     .fetch(
-      `*[_type == "post" && author->username == $username
-      || author._ref in *[_type == "user" && username == $username].following[]._ref]
+      `*[_type == "post" && author->username == "${username}"
+      || author._ref in *[_type == "user" && username == "${username}"].following[]._ref]
       | order(_createdAt desc){
         ${simplePostProjection}
-      }
-    `,
-      {
-        username,
-      }
+      }`
     )
     .then(mapPosts);
 }
@@ -32,7 +28,7 @@ export async function getPosts(username: string) {
 export async function getPostById(id: string) {
   return client
     .fetch(
-      `*[_type == "post" && _id == $id][0]{
+      `*[_type == "post" && _id == "${id}"][0]{
         ...,
         "id": _id,
         "username": author->username,
@@ -45,11 +41,7 @@ export async function getPostById(id: string) {
           "username": author->username,
           "image": author->image
         }
-      }
-    `,
-      {
-        id,
-      }
+      }`
     )
     .then((post) => ({
       ...post,
@@ -61,14 +53,12 @@ export async function getPostById(id: string) {
 export async function getMyPosts(username: string) {
   return client
     .fetch(
-      `*[_type == "post" && author->username == $username]
+      `*[_type == "post" && author->username == "${username}"]
         | order(_createdAt desc){
           ${simplePostProjection}
-        }
-    `,
-      {
-        username,
-      }
+      }`,
+      {},
+      { cache: "no-store" }
     )
     .then(mapPosts);
 }
@@ -76,14 +66,12 @@ export async function getMyPosts(username: string) {
 export async function getBookmarkedPosts(username: string) {
   return client
     .fetch(
-      `*[_type == "post" && _id in *[_type == "user" && username == $username].bookmarks[]._ref]
+      `*[_type == "post" && _id in *[_type == "user" && username == "${username}"].bookmarks[]._ref]
         | order(_createdAt desc){
           ${simplePostProjection}
-        }
-    `,
-      {
-        username,
-      }
+        }`,
+      {},
+      { cache: "no-store" }
     )
     .then(mapPosts);
 }
@@ -91,14 +79,12 @@ export async function getBookmarkedPosts(username: string) {
 export async function getLikedPosts(username: string) {
   return client
     .fetch(
-      `*[_type == "post" && $username in likes[]->username]
+      `*[_type == "post" && "${username}" in likes[]->username]
         | order(_createdAt desc){
           ${simplePostProjection}
-        }
-    `,
-      {
-        username,
-      }
+        }`,
+      {},
+      { cache: "no-store" }
     )
     .then(mapPosts);
 }

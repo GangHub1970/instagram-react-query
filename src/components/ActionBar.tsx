@@ -11,6 +11,7 @@ import BookmarkFilledIcon from "./ui/icons/BookmarkFilledIcon";
 import usePosts from "@/hooks/posts";
 import useMe from "@/hooks/me";
 import CommentForm from "./CommentForm";
+import { useCacheKey } from "@/contexts/CacheKeyContext";
 
 type Props = {
   post: SimplePost;
@@ -19,8 +20,9 @@ type Props = {
 };
 
 export default function ActionBar({ post, onAddComment, children }: Props) {
+  const cacheKey = useCacheKey();
   const { id, likes, createdAt } = post;
-  const { setLike } = usePosts();
+  const { setLike } = usePosts(cacheKey.queryKey);
   const { user, setBookmark } = useMe();
 
   const liked = user ? likes.includes(user?.username) : false;

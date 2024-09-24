@@ -5,6 +5,7 @@ import {
   postLikeFetcher,
   postListDataFetcher,
 } from "@/lib/fetchers/post";
+import { myPostDataFetcher } from "@/lib/fetchers/user";
 import { Comment, SimplePost } from "@/models/post";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
@@ -20,15 +21,21 @@ type CommentMutation = {
   post: SimplePost;
 };
 
-export default function usePosts() {
+export default function usePosts(queryKey: string[] = ["posts"]) {
   const queryClient = useQueryClient();
   const {
     data: posts,
     isLoading,
     error,
   } = useQuery<SimplePost[]>({
-    queryKey: ["posts"],
-    queryFn: postListDataFetcher,
+    queryKey,
+    queryFn: () => {
+      if (queryKey.length === 3) {
+        const [_, username, query] = queryKey;
+        return myPostDataFetcher(username, query);
+      }
+      return postListDataFetcher();
+    },
   });
 
   const setLike = useCallback(
@@ -37,9 +44,9 @@ export default function usePosts() {
         postLikeFetcher(post.id, liked),
       onMutate: async ({ username, liked, post }) => {
         // setQueryData가 진행되는 중에 ["posts"] 키를 가지는 query에 대한 다른 업데이트가 있는 경우를 무시하기 위해 캐시를 삭제해준다.
-        await queryClient.cancelQueries({ queryKey: ["posts"] });
+        await queryClient.cancelQueries({ queryKey });
 
-        const previousPosts = queryClient.getQueryData(["posts"]);
+        const previousPosts = queryClient.getQueryData(queryKey);
         const newPost = {
           ...post,
           likes: liked
@@ -47,7 +54,7 @@ export default function usePosts() {
             : [...post.likes, username],
         };
 
-        queryClient.setQueryData(["posts"], (oldPosts: SimplePost[]) => {
+        queryClient.setQueryData(queryKey, (oldPosts: SimplePost[]) => {
           return oldPosts.map((p: SimplePost) =>
             p.id === post.id ? newPost : p
           );
@@ -56,11 +63,11 @@ export default function usePosts() {
         return { previousPosts };
       },
       onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: ["posts"] });
+        queryClient.invalidateQueries({ queryKey });
       },
       onError: (err, _, context) => {
         // 요청 실패 시 롤백
-        queryClient.setQueryData(["posts"], context?.previousPosts);
+        queryClient.setQueryData(queryKey, context?.previousPosts);
       },
     }).mutate,
     []
@@ -72,15 +79,15 @@ export default function usePosts() {
         postCommentFetcher(post.id, comment.comment),
       onMutate: async ({ post }) => {
         // setQueryData가 진행되는 중에 ["posts"] 키를 가지는 query에 대한 다른 업데이트가 있는 경우를 무시하기 위해 캐시를 삭제해준다.
-        await queryClient.cancelQueries({ queryKey: ["posts"] });
+        await queryClient.cancelQueries({ queryKey });
 
-        const previousPosts = queryClient.getQueryData(["posts"]);
+        const previousPosts = queryClient.getQueryData(queryKey);
         const newPost = {
           ...post,
           comments: post.comments + 1,
         };
 
-        queryClient.setQueryData(["posts"], (oldPosts: SimplePost[]) => {
+        queryClient.setQueryData(queryKey, (oldPosts: SimplePost[]) => {
           return oldPosts.map((p: SimplePost) =>
             p.id === post.id ? newPost : p
           );
@@ -89,11 +96,11 @@ export default function usePosts() {
         return { previousPosts };
       },
       onSettled: () => {
-        queryClient.invalidateQueries({ queryKey: ["posts"] });
+        queryClient.invalidateQueries({ queryKey });
       },
       onError: (err, _, context) => {
         // 요청 실패 시 롤백
-        queryClient.setQueryData(["posts"], context?.previousPosts);
+        queryClient.setQueryData(queryKey, context?.previousPosts);
       },
     }).mutate,
     []
