@@ -1,29 +1,25 @@
-import { instance } from "./axios";
-
 export async function meDataFetcher() {
-  return instance.get("/api/me").then((res) => res.data);
+  return fetch("/api/me").then((res) => res.json());
 }
 
 export async function searchUserDataFetcher(keyword: string) {
-  return instance
-    .get("/api/search", {
-      params: {
-        keyword,
-      },
-    })
-    .then((res) => res.data);
+  return fetch(`/api/search?keyword=${keyword}`).then((res) => res.json());
 }
 
 export async function myPostDataFetcher(username: string, type: string) {
-  return instance.get(`/api/user/${username}/${type}`).then((res) => res.data);
+  return fetch(`/api/user/${username}/${type}`).then((res) => res.json());
 }
 
 export async function userBookmarkFetcher(id: string, bookmarked: boolean) {
-  return instance
-    .put("/api/bookmarks", { id, bookmarked })
-    .then((res) => res.data);
+  return fetch("/api/bookmarks", {
+    method: "PUT",
+    body: JSON.stringify({ id, bookmarked }),
+  }).then((res) => res.json());
 }
 
 export async function userFollowFetcher(id: string, followed: boolean) {
-  return instance.put("/api/follow", { id, followed }).then((res) => res.data);
+  return fetch("/api/follow", {
+    method: "PUT",
+    body: JSON.stringify({ id, followed }),
+  }).then((res) => res.json());
 }

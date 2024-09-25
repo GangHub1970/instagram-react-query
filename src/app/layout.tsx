@@ -28,7 +28,9 @@ export default function RootLayout({
         <SessionProvider>
           <Header />
           <QueryContext>
-            <main className="grow w-full bg-neutral-50">{children}</main>
+            <main className="relative grow w-full bg-neutral-50">
+              {children}
+            </main>
           </QueryContext>
         </SessionProvider>
         <div id="portal" />

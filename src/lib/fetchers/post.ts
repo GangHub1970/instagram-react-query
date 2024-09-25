@@ -1,19 +1,28 @@
-import { instance } from "./axios";
-
 export async function postListDataFetcher() {
-  return instance.get("/api/posts").then((res) => res.data);
+  return fetch("/api/posts").then((res) => res.json());
+}
+
+export async function postCreateFetcher(formData: FormData) {
+  return fetch("/api/posts", {
+    method: "POST",
+    body: formData,
+  }).then((res) => res.json());
 }
 
 export async function postDetailDataFetcher(id: string) {
-  return instance.get(`/api/posts/${id}`).then((res) => res.data);
+  return fetch(`/api/posts/${id}`).then((res) => res.json());
 }
 
 export async function postLikeFetcher(id: string, liked: boolean) {
-  return instance.put("/api/likes", { id, liked }).then((res) => res.data);
+  return fetch("/api/likes", {
+    method: "PUT",
+    body: JSON.stringify({ id, liked }),
+  }).then((res) => res.json());
 }
 
 export async function postCommentFetcher(id: string, comment: string) {
-  return instance
-    .post("/api/comments", { id, comment })
-    .then((res) => res.data);
+  return fetch("/api/comments", {
+    method: "POST",
+    body: JSON.stringify({ id, comment }),
+  }).then((res) => res.json());
 }
