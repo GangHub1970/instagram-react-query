@@ -1,5 +1,5 @@
-import { auth } from "@/auth";
 import { getPostById } from "@/services/post";
+import { withSessionUser } from "@/utils/session";
 import { NextRequest, NextResponse } from "next/server";
 
 type Context = {
@@ -9,12 +9,7 @@ type Context = {
 };
 
 export async function GET(_: NextRequest, { params: { id } }: Context) {
-  const session = await auth();
-  const user = session?.user;
-
-  if (!user) {
-    return new Response("Authentication Error", { status: 401 });
-  }
-
-  return getPostById(id).then((data) => NextResponse.json(data));
+  return withSessionUser(async (user) => {
+    return getPostById(id).then((data) => NextResponse.json(data));
+  });
 }
