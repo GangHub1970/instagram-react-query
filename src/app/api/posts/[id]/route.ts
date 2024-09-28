@@ -9,7 +9,7 @@ type Context = {
 };
 
 export async function GET(_: NextRequest, { params: { id } }: Context) {
-  return withSessionUser(async (user) => {
+  return withSessionUser(async () => {
     return getPostById(id).then((data) => NextResponse.json(data));
   });
 }

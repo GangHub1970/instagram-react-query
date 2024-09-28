@@ -24,7 +24,7 @@ export default function DragAndDrop({
   // 드래그한 객체가 특정 요소 위에 계속해서 머무를 때
   // preventDefault를 호출해야 해당 요소가 드롭 가능하다는 것을 브라우저에 알릴 수 있다.
   const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
-    // e.preventDefault();
+    e.preventDefault();
   };
 
   // 드래그한 객체가 특정 요소에 드롭될 때

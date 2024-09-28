@@ -30,7 +30,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         name: name || "",
         username: email.split("@")[0],
         email,
-        image,
+        image: image ?? "",
       });
 
       return true;

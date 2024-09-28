@@ -4,7 +4,7 @@ import { AuthUser } from "@/models/user";
 import React, { useRef, useState } from "react";
 import PostUserAvatar from "./PostUserAvatar";
 import { useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postCreateFetcher } from "@/lib/fetchers/post";
 import DragAndDrop from "./DragAndDrop";
 import Textarea from "./Textarea";
@@ -16,12 +16,14 @@ type Props = {
 };
 
 export default function NewPost({ user: { username, image } }: Props) {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const commentRef = useRef<HTMLTextAreaElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const { mutate, isPending, error } = useMutation({
     mutationFn: postCreateFetcher,
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["posts"] });
       router.push("/");
     },
   });
