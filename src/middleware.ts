@@ -26,5 +26,14 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/new"],
+  matcher: [
+    "/",
+    "/new",
+    "/api/bookmarks",
+    "/api/comments",
+    "/api/likes",
+    "/api/follow",
+    "/api/me",
+    "/api/posts/:path*",
+  ],
 };
