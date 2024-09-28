@@ -11,14 +11,17 @@ const QUERIES = [
   {
     type: "posts",
     icon: <PostIcon className="w-4 h-4" />,
+    title: "user posts",
   },
   {
     type: "saved",
     icon: <BookmarkIcon className="w-4 h-4" />,
+    title: "saved posts",
   },
   {
     type: "liked",
     icon: <HeartIcon className="w-4 h-4" />,
+    title: "liked posts",
   },
 ];
 
@@ -32,7 +35,7 @@ export default function UserPosts({ username }: Props) {
   return (
     <section>
       <ul className="flex justify-center">
-        {QUERIES.map(({ type, icon }) => (
+        {QUERIES.map(({ type, icon, title }) => (
           <li
             key={type}
             onClick={() => setQuery(type)}
@@ -40,7 +43,9 @@ export default function UserPosts({ username }: Props) {
               type === query && "font-bold border-t"
             }`}
           >
-            <button className="scale-150 md:scale-100">{icon}</button>
+            <button className="scale-150 md:scale-100" aria-label={title}>
+              {icon}
+            </button>
             <span className="hidden md:inline ml-3">{type.toUpperCase()}</span>
           </li>
         ))}

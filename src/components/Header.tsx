@@ -14,9 +14,24 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Avatar from "./Avatar";
 
 const MENUS = [
-  { icon: <HomeIcon />, filledIcon: <HomeFilledIcon />, href: "/" },
-  { icon: <SearchIcon />, filledIcon: <SearchFilledIcon />, href: "/search" },
-  { icon: <PlusIcon />, filledIcon: <PlusFilledIcon />, href: "/new" },
+  {
+    icon: <HomeIcon />,
+    filledIcon: <HomeFilledIcon />,
+    href: "/",
+    title: "home",
+  },
+  {
+    icon: <SearchIcon />,
+    filledIcon: <SearchFilledIcon />,
+    href: "/search",
+    title: "search users",
+  },
+  {
+    icon: <PlusIcon />,
+    filledIcon: <PlusFilledIcon />,
+    href: "/new",
+    title: "new post",
+  },
 ];
 
 export default function Header() {
@@ -32,19 +47,21 @@ export default function Header() {
   return (
     <header className="sticky top-0 border-b border-neutral-200 bg-white z-40">
       <section className="flex justify-between mx-auto py-4 px-8 max-w-screen-xl w-full">
-        <Link href="/">
+        <Link href="/" aria-label="home">
           <h1 className="text-3xl font-bold">Instagram</h1>
         </Link>
         <nav className="content-center">
           <ul className="flex items-center gap-4">
-            {MENUS.map(({ icon, filledIcon, href }) => (
+            {MENUS.map(({ icon, filledIcon, href, title }) => (
               <li key={href}>
-                <Link href={href}>{pathname === href ? filledIcon : icon}</Link>
+                <Link href={href} aria-label={title}>
+                  {pathname === href ? filledIcon : icon}
+                </Link>
               </li>
             ))}
             {user && (
               <li>
-                <Link href={`/user/${user.username}`}>
+                <Link href={`/user/${user.username}`} aria-label="my profile">
                   <Avatar image={user.image} size="sm" highlight />
                 </Link>
               </li>

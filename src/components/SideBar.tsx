@@ -30,7 +30,7 @@ export default async function SideBar({
           <p className="text-neutral-600 font-semibold">{name}</p>
         </div>
       </div>
-      <ul className="flex flex-wrap text-neutral-400 font-semibold">
+      <ul className="flex flex-wrap text-neutral-500 font-semibold">
         {TAGS.map((tag) => (
           <li key={tag} className="after:content-['﹒'] last:after:hidden">
             <span>{tag}</span>
