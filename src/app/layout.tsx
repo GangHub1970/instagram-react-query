@@ -3,7 +3,7 @@ import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import { SessionProvider } from "next-auth/react";
-import QueryContext from "@/contexts/QueryContext";
+import QueryProvider from "@/contexts/QueryContext";
 
 const sans = Open_Sans({ subsets: ["latin"] });
 
@@ -27,11 +27,11 @@ export default function RootLayout({
       >
         <SessionProvider>
           <Header />
-          <QueryContext>
+          <QueryProvider>
             <main className="relative grow w-full bg-neutral-50">
               {children}
             </main>
-          </QueryContext>
+          </QueryProvider>
         </SessionProvider>
         <div id="portal" />
       </body>

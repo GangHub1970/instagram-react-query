@@ -32,7 +32,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export default function QueryContext({ children }: Props) {
+export default function QueryProvider({ children }: Props) {
   const queryClient = getQueryClient();
 
   return (
